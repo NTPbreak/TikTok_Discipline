@@ -70,7 +70,7 @@ const LoginScreen = () => {
         </View>
       </View>
 
-      <View style={{marginTop:100}}>
+      <View style={{flex:1,marginTop:100,justifyContent:"center"}}>
           <Text style={{fontWeight:"bold",fontSize:20,marginBottom:20}}>Retrouve les videos que tu as aimées</Text>
           <Button style={{backgroundColor:"#FF2B54",borderRadius:0,width:300,fontWeight:"bold",fontSize:20}}><Text style={{color:"white"}}>Inscription</Text></Button>
       </View>

@@ -58,7 +58,9 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
 
-    <Tab.Navigator screenOptions={{ headerShown: false }}
+    <Tab.Navigator screenOptions={{ headerShown: false }
+  
+  }
     >
       <Tab.Screen options={
         {
