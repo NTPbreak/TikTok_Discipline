@@ -1,118 +1,119 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Button } from 'react-native';
+import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Vector from "react-native-vector-icons/MaterialCommunityIcons"
+import { Provider } from 'react-redux';
+import Authentification from "./src/fronted/screen/auth";
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { store } from './src/fronted/redux/store.ts';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const PremierEcran = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      NTP Screen
     </View>
-  );
+  )
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const DetailsScreen = () => {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      Details Screen
+      Notre variable est
+    </View>
+  )
+}
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  const navigation = useNavigation();
+  // ... other code ...
+
+  // Animated styles for tab bar
+  const selectedTab = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => {
+    const translateX = withTiming(selectedTab.value * 60, { duration: 200 });
+    return {
+      transform: [{ translateX }],
+    };
+  });
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false, // Hide text labels
+        tabBarStyle: {
+          backgroundColor: '#141414', // Black background
+          height: 70, // Adjust as needed
+          position: 'absolute',
+          bottom: 20,
+          left: 20, // Add padding to avoid overlapping with edges
+          right: 20, // Add padding to avoid overlapping with edges
+          borderRadius: 30, // Rounded corners
+          paddingHorizontal: 20, // Add padding
+          elevation: 0, // Remove shadow
+          shadowOpacity: 0,
+          padding: 20
+        },
+        tabBarActiveTintColor: '#fff', // White active icon color
+        tabBarInactiveTintColor: '#888', // Gray inactive icon color
+
+      }}
+    >
+      {/* ... your tabs  */}
+
+      {/* Add the onTabPress event to update the selectedTab value */}
+      <Tab.Screen
+        name="Home"
+        component={PremierEcran}
+        options={
+          {
+            tabBarIcon: ({ color, size }) => (
+              <Vector name="home-outline" color={color} size={size} />
+            ),
+
+          }
+        }
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+      {/* ... your other tabs, update the selectedTab.value accordingly  */}
+      <Tab.Screen
+        name="Découvrir"
+        component={DetailsScreen}
+        options={
+          {
+            tabBarIcon: ({ color, size }) => (
+              <Vector name="compass-outline" color={color} size={size} />
+            ),
+
+          }
+        }
+      />
+
+      {/* ... your other tabs, update the selectedTab.value accordingly  */}
+
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+// ... your other code ...
 
+function App() {
+  const [login, setLogin] = React.useState(true)
+  return (
+
+    <Provider store={store}>
+      <NavigationContainer   >
+        <MyTabs />
+      </NavigationContainer>
+    </Provider>
+
+  );
+
+}
 export default App;
