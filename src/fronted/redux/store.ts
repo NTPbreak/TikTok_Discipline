@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import authSlicer from './slices/authSlicer'
 
 export const store = configureStore(
     {
-        reducer:{},
+        reducer:{
+            auth: authSlicer
+        },
     }
 )
 
