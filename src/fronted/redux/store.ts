@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlicer from './slices/counter'
-
+import timer from "./slices/timer"
 export const store = configureStore(
     {
         reducer:{
-            auth: authSlicer
+            auth: authSlicer,
+            timer:timer
         },
     }
 )

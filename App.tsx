@@ -1,18 +1,19 @@
 
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Button } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import auth from "@react-native-firebase/auth";
 import Vector from "react-native-vector-icons/MaterialCommunityIcons"
 import Authentification from "./src/fronted/screen/auth";
 import { Provider, useSelector, useDispatch } from 'react-redux'
 import { store, RootState } from './src/fronted/redux/store';
 import { decrement, increment } from './src/fronted/redux/slices/counter';
 import { useAppDispatch, useAppSelector } from './src/fronted/hooks/hooks';
-import BottomSheet from "@gorhom/bottom-sheet"
-
+import Discipline from "./src/fronted/screen/Discipline/index.js"
 import Auth from './src/fronted/screen/Account/account.js';
+
 function PremierEcran() {
   const navigation = useNavigation();
 
@@ -59,8 +60,8 @@ function MyTabs() {
   return (
 
     <Tab.Navigator screenOptions={{ headerShown: false }
-  
-  }
+
+    }
     >
       <Tab.Screen options={
         {
@@ -78,7 +79,7 @@ function MyTabs() {
 
           }
         }
-        component={DetailsScreen} />
+        component={Discipline} />
       <Tab.Screen name="Ajout"
         options={
           {
@@ -117,6 +118,59 @@ function MyTabs() {
 
 function App() {
   const [login, setLogin] = React.useState(true)
+
+  const TestConnexion = () => {
+    useEffect(() => {
+      const connexion = async () => {
+        auth()
+          .createUserWithEmailAndPassword('patricknegoue197@gmail.com', '123456')
+          .then(() => {
+            console.log('User account created & signed in!');
+          })
+          .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+              console.log('That email address is already in use!');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+              console.log('That email address is invalid!');
+            }
+
+            console.error(error);
+          });
+      };
+
+      connexion();
+    }, []);
+  }
+
+  function VerifAuthentification(): Boolean {
+
+    const [verdict, setVerd] = React.useState(true);
+    React.useEffect(() => {
+      const unsubscribe = auth().onAuthStateChanged(user => {
+        if (user) {
+          console.log('User email: ', user.email);
+          setVerd(false);
+          // L'utilisateur est connecté, vous pouvez ici charger des données spécifiques à l'utilisateur
+        } else {
+          console.log('No user is signed in.');
+          // L'utilisateur n'est pas connecté, vous pouvez rediriger vers la page de connexion
+          setVerd(true);
+        }
+      });
+
+      // Retournez une fonction de nettoyage pour annuler l'abonnement lorsque le composant est démonté
+      return unsubscribe;
+    }, []);
+
+    // Le reste de votre composant
+
+    return verdict;
+
+  }
+
+
   return (
 
 

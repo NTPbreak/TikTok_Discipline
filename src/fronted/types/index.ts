@@ -5,13 +5,23 @@ export interface Post {
   description: string;
   likesCount: number;
   commentsCount: number;
-  creation: string;
 }
 
 export interface Comment {
   id: string;
   creator: string;
   comment: string;
+}
+
+export interface Todo
+{
+  title:string,
+  description:string,
+  completed:boolean,
+  limiteDate?:Date,
+  priority:number,
+  createAt:Date,
+  updateAt?:Date,
 }
 
 export interface User {
@@ -22,6 +32,7 @@ export interface User {
   followingCount: number;
   followersCount: number;
   likesCount: number;
+  todo:todo[]
 }
 
 export interface SearchUser extends User {
