@@ -28,6 +28,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ id, videoUri, username, descripti
   const [comments, setComments] = useState<Comment[]>([]);
   const [activeComment, setActiveComment] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
     const fetchCurrentUser = () => {
@@ -114,9 +115,16 @@ const VideoItem: React.FC<VideoItemProps> = ({ id, videoUri, username, descripti
         source={{ uri: videoUri }}
         style={styles.video}
         resizeMode="cover"
-        repeat
-        paused={false}
+        paused={play}
       />
+      {
+        play ? (<TouchableOpacity style={{ position: "relative", bottom: "-40%", left: "40%" }} onPress={() => { setPlay(!play) }}>
+          <Vector name='play-circle-outline' color={"white"} size={70} />
+        </TouchableOpacity>) : (<TouchableOpacity style={{ position: "relative", bottom: "-40%", left: "40%" }} onPress={() => { setPlay(!play) }}>
+          <Vector name='pause-circle-outline' color={"white"} size={70} />
+        </TouchableOpacity>)
+      }
+
       <View style={{ position: "absolute", left: 340, bottom: 300 }}>
         <TouchableOpacity onPress={updateLikeStatus}>
           <View style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -143,6 +151,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ id, videoUri, username, descripti
         onClose={() => setModalVisible(false)}
         postId={id} // Passez l'ID du post comme prop
         username={user?.displayName}
+        photo={user?.photoURL}
       />
     </View>
   );

@@ -14,6 +14,7 @@ export interface Post {
 export interface Comment {
   name: string;
   comment: string;
+  photo:string
 }
 
 
@@ -44,7 +45,7 @@ export interface Profil {
   uid: string;
   email: string;
   displayName: string | null;
-  photoURL?: string;
+  photoURL: string;
   followingCount: number;
   followersCount: number;
   likesCount: number;
@@ -67,6 +68,7 @@ export interface Chat {
 
 export interface Message {
   id: string;
-  creator: string;
+  name: string;
+  email:string;
   message: string;
 }

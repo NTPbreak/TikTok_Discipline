@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
@@ -11,9 +11,10 @@ interface CommentModalProps {
     onClose: () => void;
     postId: string; // ID du post pour lequel les commentaires sont affichés
     username: string; // Nom de l'utilisateur pour affichage
+    photo: string
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, username }) => {
+const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, username, photo }) => {
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
 
@@ -45,6 +46,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
         const commentToAdd: Comment = {
             comment: newComment,
             name: username,
+            photo: photo
             // Ajoutez ici d'autres champs comme la date, etc. selon votre modèle de données
         };
 
@@ -66,10 +68,17 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
             <>
                 {comments.map((comment, index) => (
                     <ListItem key={index} bottomDivider>
-                        <ListItem.Content>
-                            <ListItem.Title>{comment.name}</ListItem.Title>
-                            <ListItem.Subtitle>{comment.comment}</ListItem.Subtitle>
-                        </ListItem.Content>
+                        <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <Image
+                                style={styles.avatar}
+                                source={{ uri: comment.photo || 'https://via.placeholder.com/150' }}
+                            />
+                            <ListItem.Content>
+                                <ListItem.Title>{comment.name}</ListItem.Title>
+                                <ListItem.Subtitle>{comment.comment}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </View>
+
                     </ListItem>
                 ))}
             </>
@@ -78,12 +87,16 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
 
     return (
         <BottomSheet isVisible={visible} containerStyle={styles.bottomSheetContainer}>
+
             <View style={styles.bottomSheetInnerContainer}>
+                <TouchableOpacity style={{flex:1,alignItems:"flex-end"}} onPress={onClose}>
+                    <Vector name='close' color={"black"} size={20} />
+                </TouchableOpacity>
                 <Text style={styles.title}>Comments</Text>
                 <ScrollView style={styles.commentsContainer}>
                     {renderCommentsList()}
                 </ScrollView>
-                <View style={{ flex: 1, flexDirection: "row" ,justifyContent:"center"}}>
+                <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
                     <TextInput
                         style={styles.input}
                         placeholder="Add a comment..."
@@ -91,13 +104,10 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
                         onChangeText={setNewComment}
                         numberOfLines={3}
                     />
-                    <TouchableOpacity style={[styles.button,{display:"flex",alignItems:"center",justifyContent:"center"}]} onPress={addComment}>
+                    <TouchableOpacity style={[styles.button, { display: "flex", alignItems: "center", justifyContent: "center" }]} onPress={addComment}>
                         <Vector name='send' color={"black"} size={20} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={[styles.button, { backgroundColor: 'red',flex:1 }]} onPress={onClose}>
-                    <Text style={[styles.buttonText,{textAlign:"center"}]}>Close</Text>
-                </TouchableOpacity>
             </View>
         </BottomSheet>
     );
@@ -123,7 +133,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5,
         marginBottom: 10,
-        flex:1,
+        flex: 1,
     },
     button: {
         padding: 10,
@@ -136,8 +146,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     commentsContainer: {
-        maxHeight: 300,
+        maxHeight: 350,
         marginBottom: 10,
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        marginBottom: 10,
+        marginRight: 10
     },
 });
 

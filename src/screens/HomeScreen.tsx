@@ -72,7 +72,7 @@ const HomeScreen: React.FC = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <FlatList
           data={videos}
-          renderItem={renderItem}
+          renderItem={ renderItem}
           keyExtractor={item => item.id}
           snapToInterval={height}
           snapToAlignment="start"
