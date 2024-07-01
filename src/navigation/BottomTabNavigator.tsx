@@ -8,6 +8,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import InboxScreen from '../screens/InboxScreen';
+import ChoicePage from "../screens/choicePage";
 import UploadScreen from '../screens/UploadScreen';
 import TimeManager from '../screens/TimeManagerScreen';
 
@@ -59,14 +60,14 @@ const BottomTabNavigator: React.FC = () => {
 
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: '#FF2B54',
         tabBarInactiveTintColor: 'gray',
         headerShown:false
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
 
-      <Tab.Screen name="Message box" component={FriendsScreen} />
+      <Tab.Screen name="Message box" component={ChoicePage} />
       <Tab.Screen
         name="Add"
         component={UploadScreen}

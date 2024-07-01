@@ -5,7 +5,7 @@ export interface Post {
   description: string;
   likesCount: number;
   commentsCount: number;
-  LikeUser:string[]
+  LikeUser: string[]
 }
 
 
@@ -14,7 +14,7 @@ export interface Post {
 export interface Comment {
   name: string;
   comment: string;
-  photo:string
+  photo: string
 }
 
 
@@ -24,21 +24,20 @@ export interface Video {
   username: string;
   description: string;
   userId: string;
-  comments:Comment[],
+  comments: Comment[],
   numComment: number;
   numLike: number;
   whyLove: string[]
 }
 
-export interface Todo
-{
-  title:string,
-  description:string,
-  completed:boolean,
-  limiteDate?:Date,
-  priority:number,
-  createAt:Date,
-  updateAt?:Date,
+export interface Todo {
+  title: string,
+  description: string,
+  completed: boolean,
+  limiteDate?: Date,
+  priority: number,
+  createAt: Date,
+  updateAt?: Date,
 }
 
 export interface Profil {
@@ -66,9 +65,21 @@ export interface Chat {
   messages: Message[];
 }
 
-export interface Message {
+export interface Abonnee {
+  suiveur: string
+  suivie: string
+  date: Date
+}
+
+
+export interface Message
+{
+  message:string;
+  date:Date;
+}
+export interface MessageProfil {
   id: string;
-  name: string;
-  email:string;
-  message: string;
+  destinataire: string;
+  envoyeur: string;
+  message:Message
 }

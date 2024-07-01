@@ -5,22 +5,30 @@ import { BottomSheet, ListItem } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 import { Comment, Video } from '../type'; // Assurez-vous d'importer le type Comment correctement
 import Vector from "react-native-vector-icons/MaterialCommunityIcons";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 interface CommentModalProps {
     visible: boolean;
     onClose: () => void;
     postId: string; // ID du post pour lequel les commentaires sont affichés
     username: string; // Nom de l'utilisateur pour affichage
-    photo: string
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, username, photo }) => {
+const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, username }) => {
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
+    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
+
 
     useEffect(() => {
+        const fetchCurrentUser = () => {
+            const currentUser = auth().currentUser;
+            setUser(currentUser);
+        };
+        fetchCurrentUser();
         fetchComments();
-    }, []);
+    }, [comments]);
 
     // Fonction pour charger les commentaires depuis Firestore
     const fetchComments = async () => {
@@ -29,7 +37,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
             if (documentSnapshot.exists) {
                 const postData = documentSnapshot.data() as Video;
                 if (postData && postData.comments) {
-                    setComments(postData.comments);
+                    setComments(postData.comments) ;
                 }
             } else {
                 console.log('Document not found');
@@ -46,9 +54,9 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
         const commentToAdd: Comment = {
             comment: newComment,
             name: username,
-            photo: photo
+            photo:user?.photoURL
             // Ajoutez ici d'autres champs comme la date, etc. selon votre modèle de données
-        };
+        }
 
         try {
             const updatedComments = [...comments, commentToAdd];
@@ -89,7 +97,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
         <BottomSheet isVisible={visible} containerStyle={styles.bottomSheetContainer}>
 
             <View style={styles.bottomSheetInnerContainer}>
-                <TouchableOpacity style={{flex:1,alignItems:"flex-end"}} onPress={onClose}>
+                <TouchableOpacity style={{ flex: 1, alignItems: "flex-end" }} onPress={onClose}>
                     <Vector name='close' color={"black"} size={20} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Comments</Text>
@@ -105,7 +113,7 @@ const CommentModal: React.FC<CommentModalProps> = ({ visible, onClose, postId, u
                         numberOfLines={3}
                     />
                     <TouchableOpacity style={[styles.button, { display: "flex", alignItems: "center", justifyContent: "center" }]} onPress={addComment}>
-                        <Vector name='send' color={"black"} size={20} />
+                        <Vector name='send' color={"#FF2B54"} size={20} />
                     </TouchableOpacity>
                 </View>
             </View>

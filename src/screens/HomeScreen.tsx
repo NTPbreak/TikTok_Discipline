@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Dimensions, SafeAreaView,Text } from 'react-native';
+import { View, FlatList, Dimensions, SafeAreaView, Text } from 'react-native';
 import VideoItem from '../components/VideoItem';
 import firestore from '@react-native-firebase/firestore';
 import Video from 'react-native-video';
@@ -15,14 +15,13 @@ interface Video {
   islove: boolean;
   numComment: number;
   numLike: number;
-  whyLove: string[]
+  whyLove: string[];
+  photoUrl: string;
 }
 
 const HomeScreen: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);
-  const [isLike, setIsLike] = useState(false);
-  const [numLike, setNumLike] = useState(0);
-  const [numComment, setNumComment] = useState(0);
+
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -59,27 +58,32 @@ const HomeScreen: React.FC = () => {
     console.log('Affichage de la vidéo:', item);
     return (
       <VideoItem
-        id = {item.id}
+        id={item.id}
         videoUri={item.videoUrl}
         username={item.username}
         description={item.description}
-        userId={item.userId}
+        userUid={item.userId}
+        photo = {item.photoUrl}
       />
     );
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <FlatList
-          data={videos}
-          renderItem={ renderItem}
-          keyExtractor={item => item.id}
-          snapToInterval={height}
-          snapToAlignment="start"
-          decelerationRate="fast"
-          pagingEnabled
-          showsVerticalScrollIndicator={false}
-        />
+      {
+        videos.length > 0 ?
+          (<FlatList
+            data={videos}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            snapToInterval={height}
+            snapToAlignment="start"
+            decelerationRate="fast"
+            pagingEnabled
+            showsVerticalScrollIndicator={false}
+          />) : (<View style={{flex:1,justifyContent:"center",alignItems:"center"}}><Text>Pas de video</Text></View>)
+      }
+
     </SafeAreaView>
   );
 };

@@ -54,7 +54,8 @@ const UploadScreen: React.FC = () => {
           isLove:false,
           numComment:0,
           numLike:0,
-          whyLove:[]
+          whyLove:[],
+          photoUrl:user.photoURL
         });
 
         Alert.alert('Vidéo uploadée !', 'Votre vidéo a été uploadée avec succès.');

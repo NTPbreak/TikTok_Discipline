@@ -45,6 +45,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: user.photoURL,
+                followingCount:0,
+                followerCount:0,
+                likesCount:0,
             });
 
             console.log('Signed in with Google and user info saved to Firestore!');
