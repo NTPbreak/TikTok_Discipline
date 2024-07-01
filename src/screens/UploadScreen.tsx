@@ -50,6 +50,11 @@ const UploadScreen: React.FC = () => {
           username: user.displayName,
           description: 'Ajouter une description', // Vous pouvez modifier cela pour obtenir la description de l'utilisateur
           timestamp: new Date(),
+          comments:[],
+          isLove:false,
+          numComment:0,
+          numLike:0,
+          whyLove:[]
         });
 
         Alert.alert('Vidéo uploadée !', 'Votre vidéo a été uploadée avec succès.');

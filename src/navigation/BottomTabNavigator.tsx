@@ -31,6 +31,7 @@ const BottomTabNavigator: React.FC = () => {
 
   return (
     <Tab.Navigator
+
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
@@ -42,13 +43,13 @@ const BottomTabNavigator: React.FC = () => {
             case 'Profile':
               iconName = 'account';
               break;
-            case 'Amis':
+            case 'Message box':
               iconName = 'message-text';
               break;
-            case 'Time Manager':
-              iconName = 'clock';
+            case 'timelapse':
+              iconName = 'timelapse';
               break;
-            case 'Upload':
+            case 'Add':
               iconName = 'plus-circle';
               break;
             default:
@@ -58,22 +59,25 @@ const BottomTabNavigator: React.FC = () => {
 
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
+        headerShown:false
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Amis" component={FriendsScreen} />
-      <Tab.Screen name="Time Manager" component={TimeManager} />
+
+      <Tab.Screen name="Message box" component={FriendsScreen} />
+      <Tab.Screen
+        name="Add"
+        component={UploadScreen}
+        options={{ tabBarLabel: 'Add' }} // Optionnel: étiquette de tabulation
+      />
+      <Tab.Screen name="timelapse" component={TimeManager} />
       <Tab.Screen
         name="Profile"
         component={user ? ProfileScreen : LoginScreen}
       />
-      <Tab.Screen
-        name="Upload"
-        component={UploadScreen}
-        options={{ tabBarLabel: 'Upload' }} // Optionnel: étiquette de tabulation
-      />
+
     </Tab.Navigator>
   );
 };

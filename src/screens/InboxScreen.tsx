@@ -5,6 +5,7 @@ const InboxScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text>Boîte de réception</Text>
+      
     </View>
   );
 };

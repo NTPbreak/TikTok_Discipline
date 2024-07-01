@@ -22,7 +22,7 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
     useEffect(() => {
         GoogleSignin.configure({
-            webClientId: '248209830274-gedhu45ofrunsqs5u774hgcoami5qckl.apps.googleusercontent.com',
+            webClientId: "1065659938472-jpp5j21jib0bevff7idj8da82qhknta2.apps.googleusercontent.com",
         });
     }, []);
 
@@ -50,6 +50,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             console.log('Signed in with Google and user info saved to Firestore!');
         } catch (error) {
             console.error(error);
+            console.log("une erreur ces produites : "+error)
         }
     };
 
